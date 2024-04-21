@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
   
 // Function to fetch todos from server and display them
 function fetchTodos() {
-    fetch(baseURL + "todos")
+    fetch(`${baseURL}todos`)
       .then(response => response.json())
       .then(todos => {
         const todoList = document.getElementById("todoList");
