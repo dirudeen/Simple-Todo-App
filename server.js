@@ -10,6 +10,9 @@ const cors = require("cors")
 app.use(cors())
 app.use(bodyParser.json());
 
+// Serve the html, css and js files
+app.use(express.static("public"))
+
 // Endpoint to get all todos
 app.get("/todos", (req, res) => {
   fs.readFile("todos.json", "utf8", (err, data) => {
