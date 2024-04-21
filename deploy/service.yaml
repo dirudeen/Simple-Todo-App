@@ -8,7 +8,5 @@ spec:
   selector:
     app: nodejs-todo-app
   ports:
-    name: http
     port: 80 
     targetPort: 3000
-    protocol: TCP
