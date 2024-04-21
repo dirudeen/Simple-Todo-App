@@ -11,7 +11,7 @@ pipeline {
 
     stage("Build and Push Docker Image"){
         steps {
-          sh node --version
+          sh 'node --version'
         }
     }
   }
