@@ -1,0 +1,16 @@
+pipeline {
+  agent {
+    docker { image 'node:18-alpine' }
+  }
+  stages {
+    stage('Checkout') {
+      steps {
+        git 'https://github.com/dirudeen/Simple-Todo-App'
+      }
+    }
+
+    stage("Build and Push Docker Image"){
+        sh node --version
+    }
+  }
+}
