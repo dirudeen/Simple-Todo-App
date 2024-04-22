@@ -1,6 +1,10 @@
 pipeline {
-  agent { dockerfile true }
-
+  //agent { dockerfile true }
+  agent {
+    docker {
+      image: node:lts-alpine3.18
+    }
+  }
   environment {
       DOCKER_CREDS = credentials('Docker_Credentials')
     }
