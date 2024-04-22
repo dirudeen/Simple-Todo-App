@@ -1,5 +1,11 @@
 pipeline {
-  agent { dockerfile true }
+  agent any 
+
+  environment {
+    DOCKER_IMAGE = "dirudeen/nodejs-todo-app-cicd:${BUILD_NUMBER}"
+    // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
+    DOCKER_CREDS = credentials('Docker_Credentials')
+  }
 
   stages {
       stage('Checkout') {
@@ -8,11 +14,11 @@ pipeline {
           }
       }
 
-      stage('Print Environment') {
-        steps {
-          sh 'echo "PATH: $PATH"'
-        }
-      }
+      // stage('Print Environment') {
+      //   steps {
+      //     sh 'echo "PATH: $PATH"'
+      //   }
+      // }
       // stage('Build and Push Docker Image') {
       // environment {
       //   DOCKER_IMAGE = "dirudeen/nodejs-todo-app-cicd:${BUILD_NUMBER}"
@@ -30,12 +36,12 @@ pipeline {
       // }
     
 
-      // stage('Build Docker Image') {
-      //     steps {
-      //       echo 'Building Docker Imaging....'
-      //       sh ('docker build -t $DOCKER_CREDS_USR/nodejs-todo-app:latest .' )
-      //     }
-      // }
+      stage('Build Docker Image') {
+          steps {
+            echo 'Building Docker Imaging....'
+            sh ("docker build -t ${DOCKER_IMAGE} ." )
+          }
+      }
 
       // stage('Test Image') {
       //     steps {
@@ -44,13 +50,13 @@ pipeline {
       //     }
       // }
 
-      // stage('Push Image to DockerHub') {
-      //   steps {
-      //     echo 'pushing image.....'
-      //     sh ('docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW')
-      //     sh ('docker push $DOCKER_CREDS_USR/nodejs-todo-app:latest')
-      //   }
+      stage('Push Image to DockerHub') {
+        steps {
+          echo 'pushing image.....'
+          sh ('docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW')
+          sh ("docker push ${DUCKER_IMAGE}")
+        }
  
-      // }
+      }
   }
 }
