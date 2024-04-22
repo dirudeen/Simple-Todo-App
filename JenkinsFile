@@ -3,8 +3,6 @@ pipeline {
 
   environment {
       DOCKER_CREDS = credentials('Docker_Credentials')
-
-      def buildImageName = '$DOCKER_CREDS_USR/nodejs-todo-app:' + "${BUILD_NUMBER}"
     }
 
   stages {
@@ -17,22 +15,24 @@ pipeline {
       stage('Build Docker Image') {
           steps {
             echo 'Building Docker Imaging....'
-            sh ("docker build -t ${buildImageName} .")
-              
+            sh ('docker build -t $DOCKER_CREDS_USR/nodejs-todo-app:latest .' )
           }
       }
 
       stage('Test Image') {
           steps {
             echo 'testing image....'
-            sh "docker inspect type=image ${buildImageName}"
+            sh ('docker inspect type=image $DOCKER_CREDS_USR/nodejs-todo-app:latest')
           }
       }
 
       stage('Push Image to DockerHub') {
-        echo 'pushing image.....'
-        sh 'sudo docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW'
-        sh "sudo docker push ${buildImageName}"
+        steps {
+          echo 'pushing image.....'
+          sh ('docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW')
+          sh ('docker push $DOCKER_CREDS_USR/nodejs-todo-app:latest')
+        }
+ 
       }
   }
 }
