@@ -54,7 +54,7 @@ pipeline {
         steps {
           echo 'pushing image.....'
           sh ('docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW')
-          sh ("docker push ${DUCKER_IMAGE}")
+          sh ("docker push ${DOCKER_IMAGE}")
         }
  
       }
