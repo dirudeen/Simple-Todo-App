@@ -2,7 +2,7 @@ pipeline {
   //agent { dockerfile true }
   agent {
     docker {
-      image: node:lts-alpine3.18
+      image 'node:lts-alpine3.18'
     }
   }
   environment {
