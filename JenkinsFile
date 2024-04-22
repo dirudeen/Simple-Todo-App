@@ -8,14 +8,11 @@ pipeline {
           }
       }
 
-
-  stages {
-    stage('Print Environment') {
-      steps {
-        sh 'echo "PATH: $PATH"'
+      stage('Print Environment') {
+        steps {
+          sh 'echo "PATH: $PATH"'
+        }
       }
-    }
-  }
       // stage('Build and Push Docker Image') {
       // environment {
       //   DOCKER_IMAGE = "dirudeen/nodejs-todo-app-cicd:${BUILD_NUMBER}"
