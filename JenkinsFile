@@ -7,8 +7,8 @@ pipeline {
             git url: 'https://github.com/dirudeen/Simple-Todo-App.git', branch: 'master'
           }
       }
-  }
-  
+
+
   stages {
     stage('Print Environment') {
       steps {
