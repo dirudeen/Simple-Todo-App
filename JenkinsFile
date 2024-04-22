@@ -1,12 +1,42 @@
 pipeline {
-  agent {
-    docker { image 'node:16-alpine' }
-  }
-  stages {
-    stage('Test') {
-      steps {
-        sh 'node --version'
-      }
+    agent {
+        dockerfile { true }
     }
-  }
+
+    environment {
+        DOCKER_CREDS = credentials('Docker_Credentials')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/dirudeen/Simple-Todo-App.git', branch: 'master'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                
+                script {
+                  // build image name
+                  def buildImageName = '$DOCKER_CREDS_USR/nodejs-todo-app:' + "${BUILD_NUMBER}"
+                  echo 'Building Docker Imaging....'
+                  sh ("docker build -t ${buildImageName} .")
+                }
+                
+            }
+        }
+
+        stage('Test Image') {
+            steps {
+                echo 'testing image....'
+                sh "docker inspect type=image ${buildImageName}"
+            }
+        }
+
+        stage('Push Image to DockerHub') {
+            echo 'pushing image.....'
+            sh 'sudo docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW'
+            sh "sudo docker push ${buildImageName}"
+        }
+    }
 }
